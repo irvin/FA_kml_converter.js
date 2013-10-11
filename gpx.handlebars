@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="FlightAwareRouteConverter">
     <metadata>
-        <name>{{name}}</name>
+        <name>{{desc}}</name>
+        <bounds minlat="{{minlat}}" minlon="{{minlon}}"
+                maxlat="{{maxlat}}" maxlon="{{maxlon}}" />
     </metadata>
     <rte>
-        <name>{{name}}'s Route</name>
+        <name>{{name}}</name>
         {{#each coor}}
         <rtept lon="{{this.lon}}" lat="{{this.lat}}">
+            <ele>{{this.height}}</ele>
             <time>{{this.time}}</time>
-            <geoidheight>{{this.height}}</geoidheight>
             <name>Waypoint {{@index}}</name>
         </rtept>
         {{/each}}

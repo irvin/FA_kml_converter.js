@@ -11,14 +11,25 @@ var xml = fs.readFileSync(filename, 'utf-8');
 //console.log('Source XML:');
 //console.log(xml);
 
-var name, when, coord, num;
+
+var data = {};
+var when, coord, num;
 
 xml2js.parseString(xml, function (err, result) {
-    var data = result.kml.Document[0].Placemark[2]['gx:Track'];
+    var dat = result.kml.Document[0].Placemark[2]['gx:Track'];
     
-    name = result.kml.Document[0].Placemark[2].name[0];    
-    when = data[0].when;
-    coord = data[0]['gx:coord'];
+    data = {
+        name: result.kml.Document[0].Placemark[2].name[0],
+        desc: result.kml.Document[0].name[0],
+        minlat: 90.0,
+        minlon: 180.0,
+        maxlat: -90.0,
+        maxlon: -180.0, 
+        coor: []
+    };
+
+    when = dat[0].when;
+    coord = dat[0]['gx:coord'];
     num = when.length;
     
 //    console.log(when, coord, num);
@@ -29,20 +40,22 @@ xml2js.parseString(xml, function (err, result) {
 var template = fs.readFileSync('./gpx.handlebars', 'utf-8');
 template = handlebars.compile(template);
 
-var data = {
-    name: name,
-    coor: []
-};
-
 for (i=0; i<num; i++){
     var coo = coord[i].split(' ');
+    var lon = coo[0];
+    var lat = coo[1];
     
     data.coor[i] = {
         time: when[i],
-        lon: coo[0],
-        lat: coo[1],
+        lon: lon,
+        lat: lat,
         height: coo[2]
     }
+    
+    if (lat < data.minlat) data.minlat = lat;
+    if (lon > data.maxlat) data.maxlat = lat;
+    if (lon < data.minlon) data.minlon = lon;
+    if (lon > data.maxlon) data.maxlon = lon;
 };
 
 var buffer = template(data);
