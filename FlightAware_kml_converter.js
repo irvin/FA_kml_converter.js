@@ -2,7 +2,11 @@ var fs = require('fs'),
     xml2js = require('xml2js'),
     handlebars = require("handlebars");
 
-var xml = fs.readFileSync('./track.xml', 'utf-8');
+
+var filename = process.argv[2];
+var filename_unext = filename.split('.')[0];
+
+var xml = fs.readFileSync(filename, 'utf-8');
 
 //console.log('Source XML:');
 //console.log(xml);
@@ -10,7 +14,6 @@ var xml = fs.readFileSync('./track.xml', 'utf-8');
 var name, when, coord, num;
 
 xml2js.parseString(xml, function (err, result) {
-    console.log('Parsed Json:');
     var data = result.kml.Document[0].Placemark[2]['gx:Track'];
     
     name = result.kml.Document[0].Placemark[2].name[0];    
@@ -45,10 +48,10 @@ for (i=0; i<num; i++){
 var buffer = template(data);
 //console.log(buffer);
 
-fs.writeFile('./track.gpx', buffer, function(err) {
+fs.writeFile(filename_unext + '.gpx', buffer, function(err) {
     if (err) {
         console.log(err);
     } else {
-        console.log("file saved");
+        console.log("file saved as " + filename_unext + '.gpx');
     }
 });
