@@ -5,14 +5,16 @@
         <bounds minlat="{{minlat}}" minlon="{{minlon}}"
                 maxlat="{{maxlat}}" maxlon="{{maxlon}}" />
     </metadata>
-    <rte>
+    <trk>
         <name>{{name}}</name>
+        <trkseg>
         {{#each coor}}
-        <rtept lon="{{this.lon}}" lat="{{this.lat}}">
+        <trkpt lat="{{this.lat}}" lon="{{this.lon}}">
             <ele>{{this.height}}</ele>
             <time>{{this.time}}</time>
             <name>Waypoint {{@index}}</name>
-        </rtept>
+        </trkpt>
         {{/each}}
-    </rte>
+        </trkseg>
+    </trk>
 </gpx>
