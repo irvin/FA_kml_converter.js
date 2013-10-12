@@ -2,18 +2,17 @@
 <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="FlightAwareRouteConverter">
     <metadata>
         <name>{{desc}}</name>
-        <bounds minlat="{{minlat}}" minlon="{{minlon}}"
-                maxlat="{{maxlat}}" maxlon="{{maxlon}}" />
+        <bounds minlat="{{minlat}}" minlon="{{minlon}}" maxlat="{{maxlat}}" maxlon="{{maxlon}}" />
     </metadata>
     <trk>
         <name>{{name}}</name>
         <trkseg>
         {{#each coor}}
-        <trkpt lat="{{this.lat}}" lon="{{this.lon}}">
-            <ele>{{this.height}}</ele>
-            <time>{{this.time}}</time>
-            <name>Waypoint {{@index}}</name>
-        </trkpt>
+            <trkpt lat="{{this.lat}}" lon="{{this.lon}}">
+                <ele>{{this.height}}</ele>
+                <time>{{this.time}}</time>
+                <name>Waypoint {{@index}}</name>
+            </trkpt>
         {{/each}}
         </trkseg>
     </trk>
