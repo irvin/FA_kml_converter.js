@@ -13,3 +13,9 @@ $ file saved as FlightAware_x.gpx
 $ npm install xml2js
 $ npm install handlebars
 ```
+
+### Arguments
+```
+-i Insert interpolation points between each 2 point
+-s Separate output gpx files for each 150 points
+```

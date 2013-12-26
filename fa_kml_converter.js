@@ -5,13 +5,15 @@ var fs = require('fs'),
 // command arguments
 var filename = process.argv[2];
 var filename_unext = filename.split('.')[0];
-var arguments = process.argv[3];
-
 
 var opt_seg = false;    // Seperate each 150 node into single file.
-if (arguments){
-    opt_seg = (arguments == '-s')? true: false;
+var opt_ins = false;    // insert point in each point segment
+
+if (process.argv.length > 3){
+    opt_seg = (process.argv.indexOf('-s', 3) > -1)? true: false;
+    opt_ins = (process.argv.indexOf('-i', 3) > -1)? true: false;
 };
+
 
 var xml = fs.readFileSync(filename, 'utf-8');
 
@@ -63,6 +65,31 @@ for (i=0; i<num; i++){
     if (lon > data.maxlat) data.maxlat = lat;
     if (lon < data.minlon) data.minlon = lon;
     if (lon > data.maxlon) data.maxlon = lon;
+};
+
+/* Use interpolation to insert points between each point */
+if (opt_ins){
+    var tmp = [], pre = null;
+    
+    for (pt in data.coor){
+        var cur = data.coor[pt];
+        if (pre){
+            var time_1 = new Date(pre.time);
+            var time_2 = new Date(cur.time);
+            var mid = new Date((time_1.getTime() + time_2.getTime()) / 2);
+            
+            tmp.push({ 
+                time: mid.toISOString().slice(0, 19),
+                lon: ((pre.lon * 1 + cur.lon * 1) / 2).toFixed(5),
+                lat: ((pre.lat * 1 + cur.lat * 1) / 2).toFixed(5),
+                height: ((pre.height * 1 + cur.height * 1) / 2).toFixed(5),
+            })
+        }
+        
+        tmp.push(cur)
+        pre = cur;
+    };
+    data.coor = tmp;
 };
 
 
