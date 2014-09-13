@@ -1,3 +1,8 @@
+Update: this script is not in active developing. 
+We suggest use [RouteConverter](http://www.routeconverter.com/home/en) to convert FlightAware track to gpx.
+
+
+
 FlightAware kml converter
 =========================
 
